@@ -1,0 +1,15 @@
+/home/feitoza/Sources/personal_projects/LittleRDS/bin/Debug/net7.0/LittleRDS
+/home/feitoza/Sources/personal_projects/LittleRDS/bin/Debug/net7.0/LittleRDS.deps.json
+/home/feitoza/Sources/personal_projects/LittleRDS/bin/Debug/net7.0/LittleRDS.runtimeconfig.json
+/home/feitoza/Sources/personal_projects/LittleRDS/bin/Debug/net7.0/LittleRDS.dll
+/home/feitoza/Sources/personal_projects/LittleRDS/bin/Debug/net7.0/LittleRDS.pdb
+/home/feitoza/Sources/personal_projects/LittleRDS/obj/Debug/net7.0/LittleRDS.GeneratedMSBuildEditorConfig.editorconfig
+/home/feitoza/Sources/personal_projects/LittleRDS/obj/Debug/net7.0/LittleRDS.AssemblyInfoInputs.cache
+/home/feitoza/Sources/personal_projects/LittleRDS/obj/Debug/net7.0/LittleRDS.AssemblyInfo.cs
+/home/feitoza/Sources/personal_projects/LittleRDS/obj/Debug/net7.0/LittleRDS.csproj.CoreCompileInputs.cache
+/home/feitoza/Sources/personal_projects/LittleRDS/obj/Debug/net7.0/LittleRDS.dll
+/home/feitoza/Sources/personal_projects/LittleRDS/obj/Debug/net7.0/refint/LittleRDS.dll
+/home/feitoza/Sources/personal_projects/LittleRDS/obj/Debug/net7.0/LittleRDS.pdb
+/home/feitoza/Sources/personal_projects/LittleRDS/obj/Debug/net7.0/LittleRDS.genruntimeconfig.cache
+/home/feitoza/Sources/personal_projects/LittleRDS/obj/Debug/net7.0/ref/LittleRDS.dll
+/home/feitoza/Sources/personal_projects/LittleRDS/obj/Debug/net7.0/LittleRDS.csproj.AssemblyReference.cache
