@@ -16,3 +16,9 @@ LittleRDS supports only four basic commands without options
 | HGET       | fetch the value related to the given key and field        |
 
 
+## Design
+![LittleRDS process flow diagram](./LittleRDSDiagram.png)
+>[!NOTE]
+>AOF is responsible for the persistence of the data, saving every command (SET and HSET) that changes the database and loads them when the server starts.
+> That's just replayed every command until reaches the final database state.
+
