@@ -12,4 +12,3 @@
 /home/feitoza/Sources/personal_projects/LittleRDS/obj/Debug/net7.0/LittleRDS.pdb
 /home/feitoza/Sources/personal_projects/LittleRDS/obj/Debug/net7.0/LittleRDS.genruntimeconfig.cache
 /home/feitoza/Sources/personal_projects/LittleRDS/obj/Debug/net7.0/ref/LittleRDS.dll
-/home/feitoza/Sources/personal_projects/LittleRDS/obj/Debug/net7.0/LittleRDS.csproj.AssemblyReference.cache

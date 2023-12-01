@@ -10,6 +10,7 @@ public class Server
     private readonly RESPReader _respReader;
     private readonly RESPWriter _respWriter;
     private readonly CommandsHandler _commandHandler;
+    private readonly AOF _aof;
 
     public Server(IPAddress address, int port)
     {
@@ -19,11 +20,13 @@ public class Server
         _respReader = new RESPReader();
         _respWriter = new RESPWriter();
         _commandHandler = new();
+        _aof = new();
     }
 
     public void Start()
     {
         Console.WriteLine($"Sever starting...\n");
+        _aof.Read(Process);
         _listener.Start();
         Listen(new byte[1024]);
     }
@@ -63,6 +66,7 @@ public class Server
     {
         using StringReader reader = new(clientData);
         Value clientCommandRequest = _respReader.Read(reader);
+        _aof.Write(clientData, clientCommandRequest?.Array[0]?.Bulk ?? "");
         return _commandHandler.HandleCommand(clientCommandRequest);
     }
 

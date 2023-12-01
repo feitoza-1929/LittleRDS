@@ -1,0 +1,15 @@
+*3
+$3
+set
+$4
+name
+$6
+eliane
+[end]*3
+$3
+set
+$5
+name2
+$6
+miguel
+[end]
