@@ -2,7 +2,11 @@ using System.Text;
 
 public class RESPWriter
 {
-    public byte[] Write(Value value)
+    public byte[] Init(Value value)
+    {
+        return Write(value);
+    }
+    private byte[] Write(Value value)
     {
         switch (value.Type)
         {

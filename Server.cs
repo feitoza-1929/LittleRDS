@@ -71,7 +71,7 @@ public class Server
 
     private void Response(Value respValue, Stream stream)
     {
-        byte[] result = _respWriter.Write(respValue);
+        byte[] result = _respWriter.Init(respValue);
         stream.Write(result, 0, result.Length);
     }
 
