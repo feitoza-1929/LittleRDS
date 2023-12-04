@@ -64,8 +64,7 @@ public class Server
 
     private Value Process(string clientData)
     {
-        using StringReader reader = new(clientData);
-        Value clientCommandRequest = _respReader.Read(reader);
+        Value clientCommandRequest = _respReader.Init(clientData);
         _aof.Write(clientData, clientCommandRequest?.Array[0]?.Bulk ?? "");
         return _commandHandler.HandleCommand(clientCommandRequest);
     }

@@ -1,5 +1,10 @@
 public class RESPReader
 {
+    public Value Init(string sourceClientCommand)
+    {
+        using StringReader reader = new(sourceClientCommand);
+        return Read(reader);
+    }
     public Value Read(StringReader reader)
     {
         char dataType = (char)reader.Read();
