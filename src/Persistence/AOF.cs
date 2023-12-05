@@ -1,16 +1,22 @@
 public class AOF
 {
-    private bool _isReading;
-    private string defaultPath = Path.GetFullPath("aof.txt");
-    public void Read(Func<string, object> processCommands)
-    {
-        if (!Path.Exists(defaultPath))
-            return;
+    private static bool _isReading;
+    private static string _defaultPath = Path.GetFullPath("aof.txt");
 
+    public static void Read(Func<string, object> processCommands)
+    {
         _isReading = true;
 
-        string? sourceRESP = FileIO.Read(defaultPath);
-        string[]? commands = sourceRESP?.Split("[end]");
+        string? sourceRESP = FileIO.Read(_defaultPath);
+
+        if (sourceRESP is null)
+        {
+            _isReading = false;
+            return;
+        }
+            
+
+        string[] commands = sourceRESP.Split("[end]");
 
         foreach (var command in commands)
         {
@@ -20,11 +26,12 @@ public class AOF
 
         _isReading = false;
     }
-    public void Write(string command, string commandType)
+
+    public static void Write(string command, string commandType)
     {
         if (_isReading || commandType.ToUpper() == "GET" || commandType.ToUpper() == "HGET")
             return;
 
-        FileIO.Write(defaultPath, $"{command}[end]");
+        FileIO.Write(_defaultPath, $"{command}[end]");
     }
 }

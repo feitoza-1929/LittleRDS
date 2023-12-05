@@ -1,6 +1,6 @@
 using System.Text;
 
-public class RESPWriter
+public class RESPWriter : IRESPWriter
 {
     public byte[] Init(Value value)
     {

@@ -1,42 +1,40 @@
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using Microsoft.Extensions.Hosting;
 
-public class Server
+public class Server : IHostedService
 {
     private readonly int _port;
     private readonly IPAddress _localAddress;
-    private readonly TcpListener _listener;
-    private readonly RESPReader _respReader;
-    private readonly RESPWriter _respWriter;
-    private readonly CommandsHandler _commandHandler;
-    private readonly AOF _aof;
+    private readonly ServerPub _serverPub;
+    private readonly ServerProcessHandler _processHandler;
+    private TcpListener _listener;
 
-    public Server(IPAddress address, int port)
+    public Server(ServerPub serverPub, ServerProcessHandler processHandler)
     {
-        _localAddress = address;
-        _port = port;
-        _listener = new TcpListener(address, port);
-        _respReader = new RESPReader();
-        _respWriter = new RESPWriter();
-        _commandHandler = new();
-        _aof = new();
+        _serverPub = serverPub;
+        _processHandler = processHandler;
+        _port = 6643;
+        _localAddress = IPAddress.Parse("127.0.0.1");
+        _listener = new TcpListener(_localAddress, _port);
     }
 
-    public void Start()
+    public Task StartAsync(CancellationToken cancellationToken)
     {
-        Console.WriteLine($"Sever starting...\n");
-        _aof.Read(Process);
-        _listener.Start();
+        _serverPub.Emit(new() { Name = ServerEvents.SERVER_STARTED, Data = _processHandler.HandleRequest});
+        
         Listen(new byte[1024]);
+        
+        return Task.CompletedTask;
     }
 
     private void Listen(byte[] buffer)
     {
         try
         {
-            Console.WriteLine($"Sever started at {_localAddress}:{_port}\n");
-
+            _listener.Start();
+            
             string? data;
             while (true)
             {
@@ -48,7 +46,7 @@ public class Server
                 while ((i = stream.Read(buffer, 0, buffer.Length)) != 0)
                 {
                     data = Encoding.ASCII.GetString(buffer, 0, i);
-                    Response(Process(data), stream);
+                    _processHandler.HandleResponse(_processHandler.HandleRequest(data),stream);
                 }
             }
         }
@@ -62,21 +60,15 @@ public class Server
         }
     }
 
-    private Value Process(string clientData)
+    public Task StopAsync(CancellationToken cancellationToken)
     {
-        Value clientCommandRequest = _respReader.Init(clientData);
-        _aof.Write(clientData, clientCommandRequest?.Array[0]?.Bulk ?? "");
-        return _commandHandler.HandleCommand(clientCommandRequest);
-    }
-
-    private void Response(Value respValue, Stream stream)
-    {
-        byte[] result = _respWriter.Init(respValue);
-        stream.Write(result, 0, result.Length);
+        Stop();
+        return Task.CompletedTask;
     }
 
     private void Stop()
     {
+        _serverPub.Emit(new() { Name = ServerEvents.SERVER_CLOSED });
         _listener.Stop();
     }
 }

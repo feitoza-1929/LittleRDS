@@ -1,4 +1,21 @@
-﻿using System.Net;
+﻿using System.Linq.Expressions;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
-Server server = new(IPAddress.Parse("127.0.0.1"), 6643);
-server.Start();
+
+var builder = Host.CreateApplicationBuilder(args);
+
+builder.Services.AddSingleton<CommandsHandler>();
+builder.Services.AddSingleton<AOFSub>();
+builder.Services.AddSingleton<ServerPub>();
+
+builder.Services.AddTransient<IRESPWriter, RESPWriter>();
+builder.Services.AddTransient<IRESPReader, RESPReader>();
+
+builder.Services.AddScoped<ServerProcessHandler>();
+
+builder.Services.AddHostedService<Server>();
+builder.Services.AddHostedService<SubStarter>();
+
+var host = builder.Build();
+host.Run();

@@ -1,4 +1,4 @@
-public class RESPReader
+public class RESPReader : IRESPReader
 {
     public Value Init(string sourceClientCommand)
     {
