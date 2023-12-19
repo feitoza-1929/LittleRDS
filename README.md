@@ -29,6 +29,6 @@ LittleRDS supports only four basic commands without options
 > That's just replayed every command until it reaches the final database state.
 
 ## TO DO
-[ ] Event-based communication between layers
-[ ] Support Multithread operations
-[ ] Create a memory persistence layer
+- [ ] Event-based communication between layers
+- [ ] Support Multithread operations
+- [ ] Create a memory persistence layer
