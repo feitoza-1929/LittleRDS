@@ -1,5 +1,7 @@
 using System.Text;
 
+namespace LittleRDS.Parser;
+
 public class RESPWriter : IRESPWriter
 {
     public byte[] Init(Value value)

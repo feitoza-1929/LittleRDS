@@ -1,8 +1,24 @@
+using LittleRDS.Persistence;
+using LittleRDS.PubSub.Publishers;
+
+namespace LittleRDS.PubSub.Subscribers;
+
 public class AOFSub : ISubscriber
 {
-    public AOFSub(ServerPub serverPub)
+    private static AOFSub _instance;
+
+    private AOFSub()
     {
-        serverPub.Subscribe(this);
+        ServerPub.GetInstance().Subscribe(this);
+    }
+
+    public static AOFSub GetInstance()
+    {
+        if (_instance != null)
+            return _instance;
+
+        _instance = new AOFSub();
+        return _instance;
     }
 
     public void Update(Event eventData)

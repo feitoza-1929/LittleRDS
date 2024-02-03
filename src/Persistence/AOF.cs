@@ -1,7 +1,9 @@
+namespace LittleRDS.Persistence;
+
 public class AOF
 {
     private static bool _isReading;
-    private static string _defaultPath = Path.GetFullPath("aof.txt");
+    private static string _defaultPath = Path.GetFullPath("/Persistence/Data/aof.txt");
 
     public static void Read(Func<string, object> processCommands)
     {

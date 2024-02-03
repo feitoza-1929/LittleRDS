@@ -1,3 +1,5 @@
+namespace LittleRDS.Parser;
+
 public class RESPReader : IRESPReader
 {
     public Value Init(string sourceClientCommand)

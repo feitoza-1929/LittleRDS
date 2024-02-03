@@ -1,31 +1,27 @@
-public class ServerProcessHandler
+using LittleRDS.Parser;
+using LittleRDS.PubSub.Publishers;
+
+namespace LittleRDS.Server;
+
+public class ProcessHandler
 {
     private readonly CommandsHandler _commandHandler;
     private readonly IRESPReader _respReader;
     private readonly IRESPWriter _respWriter;
     private readonly ServerPub _serverPub;
 
-    public ServerProcessHandler(
-        CommandsHandler commandsHandler,
-        IRESPReader respReader,
-        IRESPWriter respWriter,
-        ServerPub serverPub)
+    public ProcessHandler()
     {
-        _commandHandler = commandsHandler;
-        _respReader = respReader;
-        _respWriter = respWriter;
-        _serverPub = serverPub;
+        _commandHandler = new CommandsHandler();
+        _respReader = new RESPReader();
+        _respWriter = new RESPWriter();
+        _serverPub = ServerPub.GetInstance();
     }
     public Value HandleRequest(string request)
     {
         Value clientCommandRequest = _respReader.Init(request);
 
-        _serverPub.Emit(
-            new() 
-            { 
-                Name = ServerEvents.SERVER_RECEIVED_COMMAND, 
-                Data = new List<string>() { request, clientCommandRequest?.Array[0]?.Bulk ?? "" } 
-            });
+        _serverPub.Emit(new() { Name = ServerEvents.SERVER_RECEIVED_COMMAND, Data = new List<string>() { request, clientCommandRequest?.Array[0]?.Bulk ?? "" } });
             
         return _commandHandler.HandleCommand(clientCommandRequest);
     }

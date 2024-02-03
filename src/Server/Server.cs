@@ -1,32 +1,32 @@
+using System.Diagnostics;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
-using Microsoft.Extensions.Hosting;
+using LittleRDS.PubSub.Publishers;
 
-public class Server : IHostedService
+namespace LittleRDS.Server;
+
+public class Server
 {
     private readonly int _port;
     private readonly IPAddress _localAddress;
     private readonly ServerPub _serverPub;
-    private readonly ServerProcessHandler _processHandler;
+    private readonly ProcessHandler _processHandler;
     private TcpListener _listener;
 
-    public Server(ServerPub serverPub, ServerProcessHandler processHandler)
+    public Server()
     {
-        _serverPub = serverPub;
-        _processHandler = processHandler;
+        _serverPub = ServerPub.GetInstance();
+        _processHandler = new ProcessHandler();
         _port = 6643;
         _localAddress = IPAddress.Parse("127.0.0.1");
         _listener = new TcpListener(_localAddress, _port);
     }
 
-    public Task StartAsync(CancellationToken cancellationToken)
+    public void Start()
     {
         _serverPub.Emit(new() { Name = ServerEvents.SERVER_STARTED, Data = _processHandler.HandleRequest});
-        
         Listen(new byte[1024]);
-        
-        return Task.CompletedTask;
     }
 
     private void Listen(byte[] buffer)
@@ -46,7 +46,8 @@ public class Server : IHostedService
                 while ((i = stream.Read(buffer, 0, buffer.Length)) != 0)
                 {
                     data = Encoding.ASCII.GetString(buffer, 0, i);
-                    _processHandler.HandleResponse(_processHandler.HandleRequest(data),stream);
+                    _processHandler.HandleResponse(
+                        _processHandler.HandleRequest(data),stream);
                 }
             }
         }
@@ -59,13 +60,6 @@ public class Server : IHostedService
             Stop();
         }
     }
-
-    public Task StopAsync(CancellationToken cancellationToken)
-    {
-        Stop();
-        return Task.CompletedTask;
-    }
-
     private void Stop()
     {
         _serverPub.Emit(new() { Name = ServerEvents.SERVER_CLOSED });
